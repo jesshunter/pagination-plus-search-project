@@ -48,11 +48,49 @@ function showPage (list, page) {
   }
 }
 
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
+/**
+* `addPagination` function
+* creates pagination buttons, highlights button of current page selected
+* and listens for page button clicks to display students for a given page when clicked
+*
+* @param {array} list - list of students
+**/
 
+function addPagination(list) {
+  const paginationButtons = Math.ceil(list.length / itemsPerPage);
+  const linkList = document.querySelector('.link-list');
+  linkList.innerHTML = '';
 
+  //creates html list of page buttons
+  for (let i = 1; i <= paginationButtons; i++ ){
+    let html = `
+    <li>
+      <button type="button">${i}</button>
+    </li>
+    `;
+    linkList.insertAdjacentHTML('beforeend', html);
+  }
+
+  //select first page button and assign it a class of active
+  let currentActiveButton = document.querySelector('.link-list li').firstElementChild;
+  currentActiveButton.className = 'active';
+
+  //event listener for clicks on pagination listener
+  linkList.addEventListener('click', (e) => {
+    //runs only on button click, not clciking space between
+      if (e.target.type === 'button'){
+        //removes active class from currentActiveButton
+        currentActiveButton.className = '';
+        //gets button that was clicked
+        currentActiveButton = e.target;
+        //sets clicked button classname to active
+        currentActiveButton.className = 'active';
+        //show list of students for designated showPage
+        showPage(data, e.target.textContent);
+    }
+  });
+}
 
 // Call functions
+showPage(data, 1);
+addPagination(data);
