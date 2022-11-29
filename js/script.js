@@ -14,12 +14,33 @@ For assistance:
    Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
 **/
 
-//items to be displayed per page
+/**
+* `addSearchBar` function
+* dynamically creates search bar and adds it to the page
+**/
+function addSearchBar(){
+  const header = document.querySelector('header');
+  const searchBarHTML = `<label for="search" class="student-search">
+    <span>Search by name</span>
+    <input id="search" placeholder="Search by name...">
+    <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+  </label>`;
+  header.insertAdjacentHTML('beforeend', searchBarHTML);
+}
+
+//adds search bar to page
+addSearchBar();
+
+
+
+
+//students to be displayed per page
 const itemsPerPage = 9;
 
 /**
 * `showPage` function:
-* gets 9 students based on the provided page. Appends student objects to studentList innerHTML to be shown on the provided page.
+* gets # students objects based on the provided page.
+* appends student objects to studentList innerHTML to be shown on the provided page.
 *
 *  @param {array} list - array of student objects
 *  @param {number} page - page number to display
