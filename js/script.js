@@ -32,8 +32,6 @@ function addSearchBar(){
 addSearchBar();
 
 
-
-
 //students to be displayed per page
 const itemsPerPage = 9;
 
@@ -111,6 +109,51 @@ function addPagination(list) {
     }
   });
 }
+
+/**
+* `studentFilter` function
+* @param {array} list - list of students
+*
+**/
+function studentFilter(list){
+
+  const searchBar = document.querySelector('#search');
+  //listen for input
+  searchBar.addEventListener('keyup', (e) => {
+
+    let searchResults = [];
+
+    //get current input and convert to lowercase
+    //compare input with list of students
+      //must compare each letter in students first and last name with input
+    for (const student of list ){
+      if (student.name.first.toLowerCase().includes(e.target.value.toLowerCase()) || student.name.last.toLowerCase().includes(e.target.value.toLowerCase()) ){
+        //add to list of search results
+        searchResults.push(student);
+        //display page of filtered students
+        showPage(searchResults, 1);
+
+        //update pagination
+        addPagination(searchResults);
+      }
+    }
+    if (searchResults.length === 0){
+      //if no match display no students or pagination
+      const studentList = document.querySelector('.student-list');
+      studentList.innerHTML = '';
+      document.querySelector('.pagination').style.display = 'none';
+      //display No Results message
+      const div = document.createElement('div');
+      const noResultsMessage = document.createElement('p');
+      noResultsMessage.textContent = "No results found";
+      noResultsMessage.className = 'no-results';
+      document.querySelector('div').append(noResultsMessage);
+      document.querySelector('body').append(div);
+    }
+  });
+}
+
+studentFilter(data);
 
 // Call functions
 showPage(data, 1);
