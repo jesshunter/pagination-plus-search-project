@@ -8,11 +8,6 @@
 
 
 
-/**
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-**/
 
 /**
 * `addSearchBar` function
@@ -28,9 +23,45 @@ function addSearchBar(){
   header.insertAdjacentHTML('beforeend', searchBarHTML);
 }
 
-//adds search bar to page
-addSearchBar();
 
+
+/**
+* `printNoResultsMessage` function
+* creates div message and displays message on the page + removes pagination
+**/
+function printNoResultsMessage () {
+
+  //display No Results message
+  const div = document.createElement('div');
+  const noResultsMessage = document.createElement('p');
+  noResultsMessage.textContent = "No results found";
+  noResultsMessage.className = 'no-results';
+  document.querySelector('div').append(noResultsMessage);
+  document.querySelector('body').append(div);
+  document.querySelector('.pagination').style.display = 'none';
+
+  //remove no results message when searchbar is cleared
+  removeNoResultsMessage(document.querySelector('#search'), noResultsMessage);
+
+}
+
+/**
+* `removeNoResultsMessage` function
+* removes div message from page when search box is cleared, redisplays pagination
+*
+* @param {element} input - input element on the page
+* @param {element} div - div containing message
+**/
+function removeNoResultsMessage(input, div) {
+  //removes no results message when search box is cleared
+  input.addEventListener('keyup', (e) => {
+    if (e.target.value === ''){
+      div.style.display = 'none';
+      document.querySelector('.pagination').style.display = '';
+    }
+
+  });
+}
 
 //students to be displayed per page
 const itemsPerPage = 9;
@@ -141,18 +172,23 @@ function studentFilter(list){
       //if no match display no students or pagination
       const studentList = document.querySelector('.student-list');
       studentList.innerHTML = '';
-      document.querySelector('.pagination').style.display = 'none';
-      //display No Results message
-      const div = document.createElement('div');
-      const noResultsMessage = document.createElement('p');
-      noResultsMessage.textContent = "No results found";
-      noResultsMessage.className = 'no-results';
-      document.querySelector('div').append(noResultsMessage);
-      document.querySelector('body').append(div);
-    }
-  });
-}
+      //document.querySelector('.pagination').style.display = 'none';
+      printNoResultsMessage();
 
+    }
+
+    //reset page to first page when search bar is cleared
+    if (e.target.value === ''){
+      showPage(data, 1);
+    }
+
+  });
+
+}
+//adds search bar to page
+addSearchBar();
+
+//add search functionality
 studentFilter(data);
 
 // Call functions
